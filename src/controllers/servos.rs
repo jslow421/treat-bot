@@ -13,12 +13,11 @@ pub fn spin_servo() -> Result<(), Box<dyn Error>> {
     )
     .expect("Failed configuring PWM..."); // Todo - handle this error better
 
-    let servo_angle = set_servo_angle(&pwm, 0.0);
-
-    // if servo_angle.is_err() {
-    //     println!("Error setting servo angle: {:?}", &servo_angle.err());
-    //     return Err(Box::new(&servo_angle.err().unwrap()));
-    // }
+    // TODO this is worth studying
+    if let Err(e) = set_servo_angle(&pwm, 0.0) {
+        println!("Error setting servo angle: {:?}", e);
+        return Err(e.into());
+    }
 
     std::thread::sleep(Duration::from_secs(1));
     set_servo_angle(&pwm, 45.0).expect("Error spinning the bitch...");
